@@ -1,6 +1,3 @@
-# Use the official OpenTelemetry Collector Contrib base image
-FROM otel/opentelemetry-collector-contrib:0.107.0 AS base
-
 # Use Alpine as the build stage to generate the config file
 FROM alpine:3.18 AS config-generator
 
@@ -53,8 +50,8 @@ service:
       address: 0.0.0.0:8888
 EOL
 
-# Use the base stage as the final image
-FROM base
+# Use the official OpenTelemetry Collector Contrib final image
+FROM otel/opentelemetry-collector-contrib:0.107.0 AS base
 
 # Copy the generated config file from the config-generator stage
 COPY --from=config-generator /app/conf/relay.yaml /conf/relay.yaml
